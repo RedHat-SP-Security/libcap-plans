@@ -11,7 +11,7 @@ prepare:
      - dnf makecache
 
 discover:
-  - name: Upstream_tests_aide
+  - name: Upstream_tests_libcap
     how: fmf
     url: https://github.com/RedHat-SP-Security/libcap-tests
     ref: master
