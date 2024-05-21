@@ -1,0 +1,21 @@
+# used in
+# https://gitlab.com/redhat/centos-stream/rpms/libcap/-/tree/c10s
+summary: test plan for libcap gating testing
+
+
+prepare:
+  - how: shell
+    script:
+     - systemctl disable --now dnf-makecache.service || true
+     - systemctl disable --now dnf-makecache.timer || true
+     - dnf makecache
+
+discover:
+  - name: Upstream_tests_aide
+    how: fmf
+    url: https://github.com/RedHat-SP-Security/libcap-tests
+    ref: master
+    filter: tag:CI-Tier-1
+
+execute:
+    how: tmt
