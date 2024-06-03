@@ -14,7 +14,6 @@ discover:
   - name: Upstream_tests_libcap
     how: fmf
     url: https://github.com/RedHat-SP-Security/libcap-tests
-    ref: master
     filter: tag:CI-Tier-1
 
 execute:
