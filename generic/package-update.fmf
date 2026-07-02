@@ -1,0 +1,40 @@
+# used in
+# https://gitlab.com/redhat/centos-stream/rpms/libcap
+
+summary: package update scenario
+
+execute:
+    how: tmt
+
+prepare:
+  - how: shell
+    order: 90
+    script:
+      # remove installed (tested) libcap and any leftovers
+      - dnf -y remove '*libcap*'
+      # install older libcap
+      - dnf -y install libcap --disablerepo test-artifacts
+
+discover:
+  - name: Pre_update_tests
+    how: fmf
+    url: https://github.com/RedHat-SP-Security/libcap-tests.git
+    ref: main
+    test:
+      - /Sanity/capsh-basic-functionality
+      - /Sanity/setcap-getcap-basic-functionality
+
+  - name: Update_libcap_package
+    how: shell
+    tests:
+      - name: libcap_update
+        test: dnf -y update '*libcap*'
+        duration: 2m
+
+  - name: Post_update_tests
+    how: fmf
+    url: https://github.com/RedHat-SP-Security/libcap-tests.git
+    ref: main
+    test:
+      - /Sanity/capsh-basic-functionality
+      - /Sanity/setcap-getcap-basic-functionality
